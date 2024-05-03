@@ -1,0 +1,30 @@
+### 6. 서브셋(subset) 만들기 
+x <- 1:5
+y <- 6:10
+z <- letters[1:5]
+
+# 실습용 데이터프레임 작성 
+df <- data.frame(x, y, z)
+
+
+help("subset") # subset 도움말 
+# subset(x, subset, select, drop = FALSE, ...)
+
+
+
+# example 
+data("iris") # Rstudio 제공 제공 
+
+str(iris) # 붓꽃 데이터셋 
+# 'data.frame':	150 obs. of  5 variables:
+# $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...     꽃받침 길이 
+# $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...   꽃받침 넓이   
+# $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...  꽃잎 길이 
+# $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...  꽃잎 넓이 
+# $ Species     : Factor w/ 3 levels "setosa","versicolor",..:      꽃의종 : 요인형 
+
+
+
+
+
+

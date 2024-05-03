@@ -1,0 +1,13 @@
+### 4.DataFrame 자료구조 
+# - 서로 다른 자료형을 갖는 컬럼으로 구성 
+# - 생성함수 : data.frame
+# - 처리함수 : apply
+
+# 1) vector 생성 
+eno <- 1:3
+ename <- c("hong", "lee", "yoo")
+age <- c(35, 45, 25)
+pay <- c(250, 350, 250)
+
+# 2) DataFrame 생성 
+emp <- data.frame(eno, ename, age, pay)

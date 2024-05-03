@@ -1,0 +1,120 @@
+# 3. 변수와 자료형 
+
+# 1) 변수(참조변수) : 자료(객체)가 저장된 메모리 주소 
+
+# 2) 변수 작성 규칙 
+# - 시작 영문, 숫자 혼용, 특수문자(_, .) 
+# - 주의 : 명령어, 패키지, 함수명 사용 불가 
+# - 대문소자 구분 
+# - 가장 최근 값으로 수정 
+
+kor <- 90
+mat <- 80
+tot = kor + mat 
+tot # print(tot)
+
+# 단일 객체 vs 복수 객체 
+name <- "홍길동" 
+age <- 35
+
+# 복수 객체  
+names <- c("홍길동", "이순신", "유관순") 
+ages <- c(35, 45, 25)
+
+# 3) 자료형(data type) : 숫자형, 문자형, 논리형 등
+int <- 1000
+string <- '우리나라 대한민국'
+boolean <- TRUE 
+
+# mode(변수)
+mode(int) # numeric
+mode(string) # character
+mode(boolean) # logical
+
+# is.xxx(변수) -> T/F
+is.numeric(int) # TRUE
+is.character(int) # FALSE
+is.logical(boolean) # TRUE
+is.na() # 결측치 여부 
+
+
+# 4. 자료형 변환(Casting)
+# 형식) as.xxxx(x)
+
+# 1) 문자형 -> 숫자형 
+x <- c(10, 20, 30, '40')
+mode(x) # "character"
+sum(x) # error
+barplot(x) # error 
+
+# 숫자형 변환 
+num <- as.numeric(x) 
+
+
+# 2) 요인형(Factor) 변환 
+# 범주형(category)변수 -> 가변수(dummy) 변환
+# 기계학습에서 문자형 자료 -> 숫자형 자료 
+# 예1) 회귀계열에서 독립변수(설명변수) 범주형 
+# 예2) 트리계열에서 종속변수(반응변수) 범주형 
+
+# 범주형 변수 
+gender <- c("M","F","F","M","M")
+gender # "M" "F" "F" "M" "M"
+
+# (1) 요인형 변환 
+fgender <- as.factor(gender)
+fgender
+
+# (2) levels 변경 : base 변경 
+fgender <- factor(x=fgender, levels = c('M', 'F')) 
+fgender
+
+# (3) 요인형 변환시 주의사항 
+num <- c(4, 2, 4, 2)
+
+# 숫자형 -> 요인형 
+fnum <- as.factor(num)
+fnum
+
+# 요인형 -> 숫자형 : 잘못된 결과 
+num2 <- as.numeric(fnum)
+num2 # 2 1 2 1
+
+
+# 3) 날짜형 변환 
+Sys.Date() # "2021-04-23"
+Sys.time() # "2021-04-23 17:07:15 KST"
+
+today <- "2021-04-23 17:07:15"
+mode(today) # "character"
+
+ctoday <- as.Date(today, "%Y-%m-%d %H:%M:%S")
+ctoday
+mode(ctoday) # "numeric"
+class(ctoday) # "Date" 
+
+# 문자형 -> 날짜형 
+today <- "2023-10-05 13:02:37"
+mode(today) # "character"
+
+# 날짜변환 
+ctoday <- as.Date(today, '%Y-%m-%d %H:%M:%S')
+mode(ctoday) # "numeric"
+class(ctoday) # "Date"
+ctoday # "2023-10-05"
+
+
+# 영어식 날짜(주식정보) -> 한국식 날짜 변환 
+edate <- '26-Apr-21' # 월 약자 : 2021-04-26
+
+# 다국어 정보 확인 
+Sys.getlocale()
+
+# 다국어 정보 수정 : 영어권 
+Sys.setlocale(locale = 'English_USA')
+kdate <- as.Date(edate, "%d-%b-%y")
+kdate # "2021-04-26"
+
+
+# 다국어 정보 수정 : 한국어
+Sys.setlocale(locale = 'Korean_Korea')

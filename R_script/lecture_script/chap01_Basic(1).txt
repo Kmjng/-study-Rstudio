@@ -1,0 +1,52 @@
+# 수업내용 
+# 1. 세션과 R명령문 실행  
+# 2. 패키지 사용법 
+# 3. 변수와 자료형
+# 4. 자료형 변환  
+# 5. 기본함수와 데이터셋 사용
+# 6. 작업경로 
+
+
+# 1. 세션과 R명령문 실행
+
+# 1) 세션(session) : 현재 수행되는 R실행 환경  
+sessionInfo()
+
+
+# 2) R명령문 2가지 
+
+# (1) 줄 단위 : 
+r <- rnorm(1000)
+print(r) # 콘솔 출력 
+hist(r) # Plots
+mean(r) # 평균 
+sd(r) # 표준편차
+
+# (2) 블럭 단위 
+pdf("C:/hist.pdf") # open
+hist(r)
+dev.off() # close
+
+
+# 2. 패키지 사용법
+
+# ※ 주의 : 컴퓨터 이름 '한글' - 패키지 설치 오류 발생 
+
+# 1) 설치 가능한 패키지 확인 
+dim(available.packages()) 
+
+# 2) 패키지 설치 : 기본 패키지 30개 이미 설치 
+install.packages('패키지명') 
+
+# 3) 설치된 패키지 검색 
+rownames(installed.packages()) 
+
+# 4) 패키지 설치 경로 
+.libPaths()
+
+# 5) 패키지 사용 
+library(패키지명) 
+
+# 6) 패키지 삭제 
+remove.packages('패키지명') 
+

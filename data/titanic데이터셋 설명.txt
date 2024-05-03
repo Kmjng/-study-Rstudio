@@ -1,0 +1,20 @@
+출처 : 
+https://www.kaggle.com/c/titanic  > competition data 링크 
+
+train : 891/12 : X_train/y_train
+test : 418/11 : Survived 칼럼 없음 - X_test
+gender_submission : Passender, Survived 칼럼 구성 - y_test  
+
+train set 변수 구성 
+- PassengerId(탑승객 ID)
+- Survived(생존유무) : 0(사망), 1(생존)
+- Pclass(선실 등급) : 1등급 / 2등급 / 3등급
+- Name(이름) 
+- Sex(성별) : female(여성), male(남성)
+- Age(연령)
+- SibSp(함께 탑승한 형제 / 자매 / 배우자 수)
+- Parch(함께 탑승한 부모 / 자녀의 수)
+- Ticket(티켓 번호)
+- Fare(티켓 요금)
+- Cabin(객실 번호)
+- Embarked(승선한 항구명) : C = Cherbourg, Q = Queenstown, S = Southampton

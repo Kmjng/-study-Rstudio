@@ -1,0 +1,19 @@
+# 5. 기본함수와 데이터셋 사용
+
+# 1) 기본함수 : 7개 base 패키지에서 제공하는 함수 
+help(mean) # 함수 도움말 
+args(mean) # 인수 보기 
+example(mean) # 예제 보기 
+
+
+# 2) 기본 데이터셋 
+data()
+data(Nile) # 메모리 로딩 
+print(Nile)
+
+# 6. 작업경로 
+getwd() # 작업경로 확인 
+setwd("C:/ITWILL/5_R_Statistics/data") # 작업경로 변경 
+
+emp <- read.csv("emp.csv")
+emp

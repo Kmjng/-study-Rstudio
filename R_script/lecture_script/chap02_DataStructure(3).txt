@@ -1,0 +1,43 @@
+### 5. List 자료구조 
+# - 키와 값 쌍으로 구성된 자료 구조(키를 통해서 값 참조)  
+# - 생성 함수 : list(key1=value, key2=value, ...)
+#  - 각 키별로 다른 자료형의 값을 갖는다. 
+# - 처리 함수 : unlist, do.call, lapply, sapply
+
+# 1) list(key=value) 형식 
+member <- list(name="홍길동",
+               age=35, address="한양",
+               gender="남자", htype="아파트")
+
+
+# 2) list(value) 형식 : key 생략
+member2 <- list("홍길동",35, "한양")
+
+
+# 3) key = value(n) 형식 
+lst3 <- list(name=c("홍길동", "유관순"),
+             age=c(35, 25),
+             gender=c('M', 'F'))
+
+
+# 4) 다양한 자료구조(vector, matrix, array) 
+lst4 <- list(one = c('one','two', 'three'),
+             two = matrix(1:9, nrow=3),
+             three = array(1:12, c(2,3,2)))
+
+
+
+# 5) list 처리 함수
+multi_list <- list(r1 = list(1,2,3),
+                      r2 = list(10,20,30),
+                      r3 = list(100,200,300))
+
+# [1] do.call(func, object) : list -> matrix 변환 
+
+
+# [2] unlist(x) : list -> vector 변환 
+
+
+# [3] list 처리 함수 : lapply, sapply
+
+
