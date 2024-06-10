@@ -1,0 +1,59 @@
+﻿##########################################
+##  6. 선형회귀분석 잔차검정과 모형진단
+##########################################
+
+# 1. 변수 선택  
+# 2. 회귀모델 
+# 3. 다중공선성 검사 
+# 4. 모형의 잔차검정 
+#   1) 잔차의 등분산성 검정
+#   2) 잔차의 정규성 검정 
+#   3) 잔차의 독립성(자기상관) 검정 
+
+names(iris)
+
+# 1. 변수 선택  : y:Sepal.Length <- x:Sepal.Width,Petal.Length,Petal.Width
+formula = Sepal.Length ~ Sepal.Width + Petal.Length + Petal.Width
+
+
+# 2. 회귀모델  
+model <- lm(formula = formula,  data=iris)
+
+# 3. 다중공선성 검사 -> 변수제거 또는 차원축소 
+library(car)
+sqrt(vif(model)) > 2 # TRUE 
+
+# 독립변수 제거 & 모델 생성 
+formula = Sepal.Length ~ Sepal.Width + Petal.Length 
+model <- lm(formula = formula,  data=iris)
+
+
+# 모델 잔차(오차) 추출 
+res <- model$residuals # 잔차(오차)
+
+
+# 4. 모형의 잔차검정
+plot(model)
+#Hit <Return> to see next plot: 잔차 vs 적합값 -> 패턴없이 무작위 분포(포물선 분포 좋지않은 적합) 
+#Hit <Return> to see next plot: Normal Q-Q -> 정규분포 : 대각선이면 잔차의 정규성 
+#Hit <Return> to see next plot: 척도 vs 위치 -> y축 : 표준화한 잔차 : 중심을 기준으로 고루 분포 
+#Hit <Return> to see next plot: 잔차 vs 영향력 -> 이상치 관찰  
+
+# (1) 잔차 선형성 검정 
+plot(model, which =  1) 
+
+# (2) 잔차 정규성 검정 
+plot(model, which =  2)  
+
+# 정규성 시각화  
+hist(res, freq = F) 
+qqnorm(res)
+
+
+# (3) 잔차 등분산성 검정 
+plot(model, which = 3) 
+
+# (4) 잔차의 독립성(자기상관 검정 : Durbin-Watson)  
+install.packages('lmtest')
+library(lmtest) # 자기상관 진단 패키지 설치 
+dwtest(model) 

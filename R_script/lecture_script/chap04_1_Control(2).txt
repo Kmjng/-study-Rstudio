@@ -1,0 +1,59 @@
+### 2. 조건문 : if(조건식), ifelse(조건식), which(조건식)
+
+# 1) if 형식1 : 단일선택 
+# if(조건식){
+#    실행문 
+# }else{
+#   실행문
+# }
+
+
+x <- 50 # x <- 20
+
+if(x >= 40){  
+  x = x * 2
+  cat("x =", x) # TRUE
+}else{
+  x = x + 2
+  cat("x = ", x) # FALSE
+}
+
+
+# 2) if형식2 : 다중선택 
+# if(조건식1){
+#    실행문1 
+# }else if(조건식2){
+#   실행문2
+# }else{
+#  실행문3
+# }
+
+# 다중선택 if문  
+if(score>=90 & score <= 100){
+   cat('A학점 : ', score)
+}else if(score >= 80){
+  cat('B학점 : ', score)
+}else if(score >= 70){
+  cat('C학점 : ', score) 
+}else{
+  cat('F학점 : ', score) 
+}
+
+
+# 3) ifelse(조건식, 참, 거짓)
+ 
+score <- c(75,85,65,NA,72,55)
+ifelse(score >= 70, '합격', '불합격')
+# [1] "합격"   "합격"   "불합격" NA "합격"   "불합격"
+
+
+# 4) which()
+x <- c(2,5,10:20, 30:50) # 벡터에서 위치 찾기 
+which(x == 19) 
+
+# 데이터프레임에서 이용 찾기 
+no <- c(1:5)
+name <-c("홍길동","이순신","강감찬","유관순","김유신")
+score <- c(85,78,89,90,74)
+
+exam <- data.frame(학번=no,이름=name,성적=score)

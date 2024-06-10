@@ -1,0 +1,41 @@
+﻿# 2. 결측치(NA) 처리
+
+# 1) 결측치 확인 
+summary(dataset) 
+table(is.na(dataset))
+
+# 그래프 이용 결측치 확인 
+install.packages("VIM")
+library(VIM)
+
+aggr(dataset, prop = FALSE, numbers = TRUE)
+
+
+# 2) 결측치 제거  
+dataset2 <- na.omit(dataset) # 전체 칼럼 기준
+
+dataset3 <- subset(dataset, subset = !(is.na(price))) # 특정 칼럼 기준 
+
+
+# 3) 결측데이터 처리(0 or 상수 대체)
+x <- dataset$price # price vector 생성 
+dataset$price2 = ifelse( !is.na(x), x, 0) # 결측치 0 대체
+
+# 4) 결측데이터 처리(평균 or 중위수 대체)
+x <- dataset$price # price vector 생성 
+dataset$price3 = ifelse(!is.na(x), x, round(mean(x, na.rm=T), 2) ) # 평균대체
+
+
+# 5) 결측치 기계학습 대체 : 다중대체법
+install.packages('mice')
+library(mice)
+
+# 적용 데이터셋 : iris 30개 
+iris_df <- head(iris, 30)
+
+# 결측치 생성 
+iris_df[1,1] <- NA # 5.1 
+iris_df[3,3] <- NA # 1.3 
+
+miceModel <- mice(iris_df) # m = 5 : 반복학습 5회 
+iris_df2 <- complete(miceModel) # 예측 dataset 생성

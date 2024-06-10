@@ -1,0 +1,61 @@
+﻿# 3. 이상치 발견과 정제
+# - 정상 범주에서 크게 벗어난 값 
+
+# 1) 범주형 변수 이상치 처리
+gender <- dataset$gender
+gender
+
+# outlier 확인
+table(gender) # 빈도수
+pie(table(gender)) # 파이 차트
+
+# gender 변수 정제(1,2)
+dataset <- subset(dataset, gender==1 | gender==2)
+dataset # gender변수 데이터 정제
+length(dataset$gender) # 297개 - 3개 정제됨
+pie(table(dataset$gender))
+
+
+# 2) 연속형 변수 이상치 처리
+dataset$price # 세부데이터 보기
+
+# (1) 정상범주(2~8) 이용 이상치 처리 
+plot(dataset$price) # 산점도 
+summary(dataset$price) # 범위확인
+
+# price변수 정제(2~8)
+dataset4 <- subset(dataset, price >= 2 & price <= 8)
+boxplot(dataset4$age)
+
+# (2) 상자그래프와 통계량 이용 이상치 처리      
+boxplot(dataset$price)
+# 일반적으로 정상범위에서 상하위 0.3% 이상치로 본다.
+
+# 상자그래프와 통계량 
+boxplot(dataset$price)$stats
+
+# 이상치 대체 : 하한값/상한값으로 대체 
+dataset5 <- na.omit(dataset) # 결측치 제거 
+
+dataset5$price <- ifelse(dataset5$price < 2.1, 2.1, dataset5$price) # 하한값 대체 
+dataset5$price <- ifelse(dataset5$price > 7.9, 7.9, dataset5$price) # 상한값 대체 
+
+
+# (3) IQR(Inter Quantile Range)방식 이용 이상치 처리
+# IQR = Q3 - Q1 
+# 정상범위 : Q1 - 1.5 * IQR ~ Q3 + 1.5 * IQR 
+
+dataset6 <- na.omit(dataset)
+
+Q1 <- quantile(dataset6$price, 1/4) # 제1사분위수
+Q3 <- quantile(dataset6$price, 3/4) # 제3사분위수 
+IQR = Q3 - Q1 
+
+outlier_step = 1.5 * IQR 
+minVal <- Q1 - outlier_step 
+maxVal <- Q3 + outlier_step 
+
+# 이상치 제거 
+clean_dataset6 <- subset(dataset6, price >= minVal & price <= maxVal) 
+boxplot(clean_dataset6$price)
+

@@ -1,0 +1,48 @@
+﻿######################################
+# 3. 식료품점(Groceries) 데이터셋 적용  
+######################################
+library(arules)
+
+# 단계1. transactions 데이터 로드 & 탐색 
+data("Groceries")  # 식료품점 데이터 메모리 로딩
+
+Groceries  # 거래(트랜잭션)과 항목(상품)
+# 실제 식료품점에서 1개월 동안 판매된 거래 데이터로 9835 트랜잭션과 169개 상품으로 구성
+
+# transactions 데이터 탐색 
+summary(Groceries) # 주요 항목(item)과 거래(transaction) 정보 확인 
+
+itemFrequencyPlot(Groceries, topN=10) # 빈도수 높은 항목(item) 10개
+
+# 단계2. 연관규칙(rule) 생성  
+rules410 <- apriori(Groceries, parameter=list(supp=0.001, conf=0.8))
+inspect(rules410)  # 410개 규칙 확인 
+
+
+# 단계3. 연관규칙(rule) 시각화
+library(arulesViz) # rules값 대상 그래프를 그리는 패키지
+
+# 연관규칙 시각화 : LHS와 RHS 간의 연관규칙 행렬 그래프
+plot(rules410, method="grouped") 
+
+# 항목(상품) 최대 길이 3이내로 규칙 생성
+rules29 <- apriori(Groceries, parameter=list(supp=0.001, conf=0.80, maxlen=3))
+inspect(rules29) # 29개 규칙
+
+# 향상도(lift) 기준 내림차순으로 규칙 정렬
+rules29 <- sort(rules29, decreasing=T, by="lift") 
+inspect(rules29) 
+
+# 연관규칙 시각화 : LHS와 RHS 간의 연관규칙 네트워크 그래프
+plot(rules29, method="graph")
+
+# 단계4. 연관상품 해석 :  중심 상품 기준 
+
+# (1) 전지우유(whole milk) 기준 subset  
+wmilk <- subset(rules29, rhs %in% 'whole milk')
+plot(wmilk, method="graph")
+
+# 2. 기타 야채(other vegetables) 기준 subset
+oveg <- subset(rules29, rhs %in% 'other vegetables')
+plot(oveg, method="graph")
+

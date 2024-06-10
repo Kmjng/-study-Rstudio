@@ -1,0 +1,31 @@
+#########################
+### 3차원 산점도 
+#########################
+#install.packages('scatterplot3d')
+library(scatterplot3d)
+
+# 꽃의 종류별 dataset 분류  
+iris_setosa = iris[iris$Species == 'setosa', ]
+iris_versicolor = iris[iris$Species == 'versicolor', ]
+iris_virginica = iris[iris$Species == 'virginica', ]
+
+# scatterplot3d(밑변, 오른쪽변, 왼쪽변, type='n') # type='n' : 기본 산점도 제외 
+d3 <- scatterplot3d(iris$Petal.Length, iris$Sepal.Length, iris$Sepal.Width, type='n')
+
+d3$points3d(iris_setosa$Petal.Length, iris_setosa$Sepal.Length,
+            iris_setosa$Sepal.Width, bg='orange', pch=21)
+
+d3$points3d(iris_versicolor$Petal.Length, iris_versicolor$Sepal.Length,
+            iris_versicolor$Sepal.Width, bg='blue', pch=23)
+
+d3$points3d(iris_virginica$Petal.Length, iris_virginica$Sepal.Length,
+            iris_virginica$Sepal.Width, bg='green', pch=25)
+
+
+
+
+
+
+
+
+

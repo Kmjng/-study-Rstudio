@@ -1,0 +1,77 @@
+﻿# chap08_DB_conn
+
+########################################
+## 정형데이터 처리(Oracle 자료처리) 
+########################################
+
+# 1. JDK설치 : RJDBC 패키지를 사용하기 위해서는 java 설치
+# 최신버전 java 다운로드 : jdk-19_windows-x64_bin
+
+# Oracle 연동 : Java 11 버전 이상 설치함
+# Oracle21c 다운로드 https://www.oracle.com/java/technologies/downloads/
+
+
+# 2. 패키지 설치
+install.packages("rJava")  
+install.packages("DBI")
+install.packages("RJDBC")
+
+
+# 3. 패키지 로딩
+library(rJava) # R + Java 
+library(DBI) # dbConnect 제공 
+
+# JDK 설치 경로 
+Sys.setenv(JAVA_HOME='C:/Program Files/Java/jdk-19') 
+library(RJDBC) # JDBC 제공 : rJava에 의존적
+
+# 4. Oracle 연동   
+######################## Oracle 21c ###################################
+# 단계1: driver 객체 
+drv <- JDBC(driverClass="oracle.jdbc.driver.OracleDriver", 
+            classPath="C:/app/itwill/product/21c/dbhomeXE/jdbc/lib/ojdbc8.jar")
+
+# 단계2:  db연동(driver, url, user, password) 
+conn <- dbConnect(drv=drv, 
+                  url="jdbc:oracle:thin:@//127.0.0.1:1521/xe",
+                  user="c##scott", 
+                  password="tiger") # 오라클 계정과 비번 확인  
+#####################################################################
+
+
+# 5. db 테이블 조회 및 수정 
+
+# 1) 전체 테이블 조회
+query <- "select * from tab"
+dbGetQuery(conn, query)  # db연결
+
+# 2) 특정 테이블 조회 
+dbGetQuery(conn, "select * from emp")
+
+# 3) table 생성  
+query <- "create table db_test(sid int, pwd char(4), 
+           name varchar(25), age int)"
+dbSendUpdate(conn, query) # table 생성   
+
+
+# 4) DML명령어 : dbSendUpdate(conn, query)
+
+# [1] insert문 
+query <- "insert into DB_TEST values(1001, '1234', '홍길동', 35)"
+
+
+# [2] update문 
+query <- "update DB_TEST set name='김길동' where sid=1001"
+
+
+# [3] delete문 
+query <- "delete from DB_TEST where sid=1001"
+
+
+# [4] table 삭제 
+dbSendUpdate(conn, "drop table DB_TEST purge")
+
+
+# db연결 종료 
+dbDisconnect(conn) # TRUE
+

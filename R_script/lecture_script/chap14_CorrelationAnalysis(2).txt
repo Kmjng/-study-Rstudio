@@ -1,0 +1,20 @@
+﻿
+######################################
+# 2. 스피어만(Spearman) 상관계수
+######################################
+# - 서열척도 변수를 대상으로 단조 증가 또는 하강하는 관계를 나타내는 계수 
+
+# 예) 국어성적 석차와 영어성적 석차의 관계
+# cor(국어성적_석차, 영어성적_석차, method = "spearman") 
+
+# 점수 
+set.seed(345)
+kor_score <- round(runif(10, min=50, max = 90))
+eng_score <- round(runif(10, min=40, max = 75))
+
+# 점수 석차 
+kor_score_rank <- sort(kor_score)
+eng_score_rank <- sort(eng_score)
+
+# 스피어만 상관계수 
+cor(kor_score_rank, eng_score_rank, method = "spearman") #  0.9939024

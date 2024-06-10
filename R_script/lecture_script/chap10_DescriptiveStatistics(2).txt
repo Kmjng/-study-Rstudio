@@ -1,0 +1,86 @@
+
+### 4. 비대칭도 :  패키지 이용 
+install.packages("moments")  # 왜도/첨도 위한 패키지 설치   
+library(moments)
+
+cost <- data$cost # 정제된 data
+
+# 1) 왜도 - 평균을 중심으로 기울어진 정도
+skewness(cost) 
+# 0보다 크면 왼쪽 기울어짐
+# 0보다 작으면 오른쪽 기울어짐
+
+# 2) 첨도 - 표준정규분포와 비교하여 얼마나 뽀족한가 측정 지표
+kurtosis(cost)      
+# 정규분포 첨도 = 3
+
+# 3) 히스토그램 : 대칭성 
+hist(cost)
+
+######################################
+## 밀도분포곡선과 표준정규분포 곡선
+######################################
+# 단계1. 히스토그램 확률밀도/표준정규분포 곡선 
+hist(cost, freq = F) # (확률)밀도 추정 
+lines(density(cost), col='blue')
+
+# 단계2. 표준정규분포 곡선 
+x <- seq(0, 8, 0.1)
+curve( dnorm(x, mean(cost), sd(cost)), col='red', add = T)
+
+# 단계3. QQ-plot
+qqnorm(cost, main = 'cost QQ-plot')
+qqline(cost, col='red')
+
+# 단계4. 정규성 검정 
+shapiro.test(cost)
+
+
+### 5. 기술통계 보고서 작성법
+# - 빈도분석 : 논문에서 인구통계학적 특성 반영   
+
+# 1) 거주지역 
+data$resident2[data$resident == 1] <-"특별시"
+data$resident2[data$resident >=2 & data$resident <=4] <-"광역시"
+data$resident2[data$resident == 5] <-"시구군"
+
+x<- table(data$resident2)
+prop.table(x) # 비율 계산
+y <-  prop.table(x)
+round(y*100, 2) #백분율 적용(소수점 2자리)
+
+# 2) 성별
+data$gender2[data$gender== 1] <-"남자"
+data$gender2[data$gender== 2] <-"여자"
+x<- table(data$gender2)
+prop.table(x) # 비율 계산
+y <-  prop.table(x)
+round(y*100, 2) #백분율 적용(소수점 2자리)
+
+# 3) 나이
+summary(data$age)# 40 ~ 69
+data$age2[data$age <= 45] <-"중년층"
+data$age2[data$age >=46 & data$age <=59] <-"장년층"
+data$age2[data$age >= 60] <-"노년층"
+x<- table(data$age2)
+prop.table(x) # 비율 계산
+y <-  prop.table(x)
+round(y*100, 2) #백분율 적용(소수점 2자리)
+
+# 4) 학력수준
+data$level2[data$level== 1] <-"고졸"
+data$level2[data$level== 2] <-"대졸"
+data$level2[data$level== 3] <-"대학원졸"
+
+x<- table(data$level2)
+prop.table(x) # 비율 계산 
+y <-  prop.table(x)
+round(y*100, 2) #백분율 적용(소수점 2자리)
+
+# 5) 합격여부
+data$pass2[data$pass== 1] <-"합격"
+data$pass2[data$pass== 2] <-"실패"
+x<- table(data$pass2)
+prop.table(x) # 비율 계산 : 0< x <1 사이의 값
+y <-  prop.table(x)
+round(y*100, 2) #백분율 적용(소수점 2자리)

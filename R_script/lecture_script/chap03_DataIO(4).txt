@@ -1,0 +1,81 @@
+### 4. 텍스트 마이닝 : 토픽분석(단어구름 시각화)
+
+# 단계1 : text file read : trump.txt
+trump <-file(file.choose())  # trump.txt
+trump_data <- readLines(trump) # 줄 단위(문장 단위) 읽기
+close(trump) # file 객체 닫기
+
+
+# 단계2 : 말뭉치 생성 & 문서단어행렬
+#install.packages("tm") # 텍스트 마이닝 도구  
+library('tm') # in memory 
+
+# 1) 말뭉치(코퍼스:Corpus) 생성 : 자연어 처리를 위한 문서 집합
+myCorpus <- Corpus(VectorSource(trump_data)) # (hangle_text) 
+# corpus 내용 보기
+inspect(myCorpus[1]) # 첫번째 문장 :  As Prepared for Delivery - 
+
+# (2) 문장부호 제거 
+myCorpus_pre <- tm_map(myCorpus, removePunctuation) # 문장부호 제거
+myCorpus_pre <- tm_map(myCorpus_pre, removeNumbers) # 수치 제거
+myCorpus_pre <-tm_map(myCorpus_pre, removeWords, stopwords('english')) # 불용어제거
+
+# (3) 문서 단어 행렬(sparse matrix)
+DTM <- DocumentTermMatrix(myCorpus_pre, 
+                                              control=list(wordLengths=c(2,15))) # 단어길이 제한 
+DTM # 문서단어행렬 
+
+
+# 단계3 : 단어 빈도수 구하기
+
+# (1) 문서단어행렬 -> DataFrame 변환
+myDTM <- as.data.frame(as.matrix(DTM)) 
+
+# (2) 단어빈도수 : 열단위 합계 > 내림차순 정렬
+word_count <- sort(colSums(myDTM), decreasing=TRUE) # 각 단어 합계 -> 내림 정렬 
+word_count[1:10] # top10 단어  
+
+
+# 단계4 : 단어구름 시각화(빈도수, 색상, 랜덤, 회전 등)
+
+# (1) 단어 추출 
+myName <- names(word_count)  
+
+# (2) 단어와 빈도수로 data.frame 생성
+word_df <- data.frame(word=myName, freq=word_count) 
+
+# (3) 단어 색상과 글꼴 지정
+pal <- brewer.pal(12,"Paired") # 12가지 색상 pal <- brewer.pal(9,"Set1") # Set1~ Set3
+
+#install.packages("wordcloud") # 단어구름 시각화  패키지 설치  
+library('wordcloud') # in memory 
+
+# (4) 단어 구름 시각화: 크기,최소빈도수,순서,회전,색상,글꼴 지정  
+x11() # 윈도우 창 
+
+# 단어구름 시각화 
+wordcloud(word_df$word, word_df$freq, 
+          scale=c(3,1), min.freq=2, random.order=F, 
+          rot.per=.1, colors=pal, family="malgun")
+
+
+##########################
+## Top10 단어 비율 시각화  
+##########################
+
+# 1) 상위 10개 토픽추출
+topWord <- head(sort(word_count, decreasing=T), 10) # 상위 10개 토픽추출 
+
+# 2) 파일 차트 생성 
+pie(topWord, col=rainbow(10), radius=1) 
+# radius=1 : 반지름 지정 - 확대 기능  
+
+# 3) 빈도수 백분율 적용 
+pct <- round(topWord/sum(topWord)*100, 1) # 백분율
+
+# 4) 단어와 백분율 하나로 합친다.
+label <- paste(names(topWord), "\n", pct, "%")
+
+# 5) 파이차트에 단어와 백분율을 레이블로 적용 
+pie(topWord, main="Trump 대통령 후보 연설문", 
+    col=rainbow(10), cex=0.8, labels=label)

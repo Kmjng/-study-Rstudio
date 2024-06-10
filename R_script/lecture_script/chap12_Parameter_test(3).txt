@@ -1,0 +1,32 @@
+﻿############################################
+###  3. 모분산 검정 : 모분산 유의성 검정
+############################################
+#install.packages("DescTools")
+library(DescTools) # VarTest() 함수 제공 
+
+
+# 1) 카이제곱검정 : 1개 모집단 대상 모분산 유의성 검정 
+# - 모분산 유의성 검정 : 모분산을 알고 있는 경우 
+
+x = rnorm(30, mean = 0, sd = 4.5) # N(50, 4.5^2) # 표본:확률변수x 
+sigma2 = 4.5^2
+
+# 95% 신뢰수준에서 모분산 검정 : 표본x와 모분산 비교
+VarTest(x, sigma.squared = sigma2, conf.level = 0.95)
+
+# X-squared 통계량 
+n <- length(x)
+S2 <- var(x) # 표본분산
+chisq <- (n-1)*S2 / sigma2 # X-squared 통계량 식 
+
+# 모분산 검정 방법 
+# X-squared분포표에서 자유도와 유의수준으로 임계값을 
+# 찾아서 X-squared 통계량이 임계값 영역에 포함되면 채택한다.
+
+
+# 2) F검정 : 두 모집단 간 분산차이 검정 
+VarTest(x1, x2, conf.level = 0.95)
+# F = 0.35906, num df = 49,denom df = 49, p-value = 0.000477
+# ratio of variances 
+#  0.3590642  -> 두 모집단의 분산비 
+

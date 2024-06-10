@@ -1,0 +1,44 @@
+﻿###################################################
+# 2. 연관분석 수행 절차 
+###################################################
+
+# 단계1. 연관성 규칙을 위한 패키지 설치 
+#install.packages("arules") # association Rule 제공 
+library(arules) 
+# read.transactions(), apriori(), inspect() 제공 
+# Adult/Groceries 데이터셋 제공
+
+# 단계2. transaction 객체 생성(파일 이용)
+setwd("C:/ITWILL/5_R_Statistics/data")
+tran<- read.transactions("tran.txt", format="basket", sep=",")
+tran
+
+# transaction 데이터 보기
+inspect(tran)
+
+# 단계3. 연관규칙(rule) 생성 
+# apriori(data, parameter=list(supp=0.1, conf=0.8, maxlen=10))
+help("apriori") # support 0.1, confidence 0.8, and maxlen 10 
+
+base_rule <- apriori(tran) # 기본 연관규칙 
+
+# 연관성 규칙 평가 척도 이용 : 지지도와 신뢰도 적용 
+rule1 <- apriori(tran, parameter = list(supp=0.3, conf=0.1)) # 16 rule
+rule2 <- apriori(tran, parameter = list(supp=0.1, conf=0.1)) # 35 rule 
+inspect(rule) # 규칙 보기
+inspect(rule2) # 규칙 보기
+
+
+# 단계4. 연관규칙 시각화   
+#install.packages('arulesViz')
+library(arulesViz)
+
+plot(rule1, method = 'graph') # rule1 시각화 
+plot(rule1, method = 'graph') # rule2 시각화 
+# 각 연관규칙 별로 연관성 있는 항목(item) 끼리 묶여서 네트워크 형태로 시각화
+
+
+# 단계5. 연관상품 해석 : 중심 상품 기준    
+na <- subset(rule2, rhs %in% '라면') # 특정 상품으로 서브셋 만들기 
+  
+plot(na, method = 'graph') # 특정 상품과 관련된 상품 확인  

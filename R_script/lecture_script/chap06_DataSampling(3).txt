@@ -1,0 +1,46 @@
+### 3. Data_Sampling
+
+# 1. sample(n, size)
+sample(x=10:20, size=5, replace = FALSE) 
+sample(c(10:20, 30:40), size=10, replace = TRUE) 
+
+
+# 2. up/down 샘플링  
+# - 복원추출 방식 y변수의 비율을 맞추는 샘플링 방식 
+
+install.packages('caret')
+library(caret)
+
+weather <- read.csv('weather.csv')
+dim(weather) # 366  15
+str(weather) 
+table(weather$RainTomorrow)
+
+
+# y변수 요인형 변경 
+weather$RainTomorrow <- as.factor(weather$RainTomorrow)
+str(weather) # $ RainTomorrow : Factor
+
+# y변수 제외 
+weather_df <- subset(weather, select = -RainTomorrow)
+dim(weather_df) # 366  14
+
+# Up sample
+up_weather <- upSample(weather_df, weather$RainTomorrow)
+str(up_weather) # 600
+
+
+# Down sample
+down_weather <- downSample(weather_df, weather$RainTomorrow)
+str(down_weather) # 132 obs
+
+table(down_weather$Class)
+
+
+
+
+
+
+
+
+

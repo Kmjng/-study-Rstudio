@@ -1,0 +1,97 @@
+### 3. 반복문 : for(), while()
+
+# 1) for
+num <- 1:10
+
+for(x in num){
+  cat('x=', x, '\n')
+}
+
+
+for(x in num){
+   if(x %% 2 == 0){ # 짝수 
+      print(x)
+   }else{ # 홀수 
+      next 
+   } 
+}  
+
+even <- 0 # 짝수 합 
+odd <- 0 # 홀수 합 
+
+for(x in num){
+  if(x %% 2 == 0){ # 짝수 
+    even <- even + x # 누적변수 
+  }else{ # 홀수 
+    odd <- odd + x
+  } 
+}  
+
+cat('even=', even, ', odd=', odd)
+
+
+# 학성관리 
+kor <- c(65, 89, 96)
+eng <- c(69,98,66)
+mat <- c(55, 88, 85)
+name <- c('홍길동', '이순신', '유관순')
+
+student <- data.frame(name, kor, eng, mat)
+student
+
+# 총점과 평균 칼럼 추가 
+tot <- student$kor + student$eng + student$mat
+tot
+student$tot <- tot
+student$avg <- round(tot/3, 2)
+
+student
+
+# grade 칼럼 : for문 + index
+size <- length(student$name)
+avg <- student$avg
+grade <- c() # 빈 벡터 : 등급 저장 
+
+# 반복 + 조건 
+for(i in avg){
+   if(avg >= 90){
+     grade <- c(grade, 'A') # 벡터변수에 등급 누적
+   }else if(avg >= 80){
+     grade <- c(grade, 'B')
+   }else if(avg >= 70){
+     grade <- c(grade, 'C')
+   }else{
+     grade <- c(grade, 'F')
+   }
+}
+grade # "F" "A" "B"
+
+# 칼럼 추가 
+student$grade <- grade
+student
+
+
+
+# 2) while
+
+i = 0 # 초기화 
+
+while (i < 10) {
+  i <- i + 1 # 카운터 변수 
+  cat(i, ' ') # 같은 라인 중복 출력 
+}
+
+# while문으로 x의 각 변량중 10의 배수만 y에 저장하기 
+x <- 1:1000 # 1~1000
+y <- c() # 빈 벡터 : 10의 배수 저장 
+i <- 0 # 색인 역할   
+
+while(i < length(x)) {
+    i <- i + 1 # 카운터  
+    if(i %% 10 == 0) {
+        y <- c(y, x[i]) 
+    }  
+}
+
+cat('y =', y)
+

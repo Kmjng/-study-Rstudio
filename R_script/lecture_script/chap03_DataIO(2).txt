@@ -1,0 +1,39 @@
+### 2. 데이터 저장(출력)하기
+
+# 1) 화면 출력 
+x <- 100
+y <- 200
+z = x + y
+cat('z=', z)
+
+
+# 변수 or 수식 
+print(z)
+print( x + y )
+
+
+# 2) 파일 데이터 저장 
+
+# (1) write.csv()
+df <- subset(titanic, select = c(class, sex, survived) )
+
+write.csv(df, 'titanic.csv', row.names=FALSE,  quote=FALSE)
+
+
+# (2) write_xlsx()
+install.packages('writexl') 
+library(writexl)
+
+write_xlsx(st_excel, path = "")
+
+
+# (3) text file 저장  
+file <- file('text_data.txt', encoding="UTF-8") # 파일 쓰기 객체 
+writeLines(텍스트, 파일객체) # 줄 단위 저장 
+close(file) # file 객체 닫기
+
+
+
+
+
+

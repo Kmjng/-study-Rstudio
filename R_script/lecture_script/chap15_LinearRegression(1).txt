@@ -1,0 +1,58 @@
+﻿chap15_LinearRegression
+
+######################################################
+# 회귀분석(Regression Analysis)
+######################################################
+# - 독립변수(설명변수)가 종속변수(반응변수)에 미치는 영향 분석
+
+###################################
+## 1. 단순회귀분석 
+###################################
+# - 독립변수와 종속변수가 1개인 경우
+
+# 1) 데이터셋 : 점수와 지능지수 
+setwd("C:/ITWILL/5_R_Statistics/data")
+score_iq <- read.csv('score_iq.csv')
+str(score_iq) # 'data.frame':	150 obs. of  6 variables:
+
+head(score_iq)
+
+
+# 2) 단순선형회귀 모델 생성  
+# 형식) lm(formula= y ~ x 변수, data)
+model <- lm(score ~ iq, data = score_iq) # (y ~ x)
+model # 회귀계수
+
+#  회귀분석 model의 12개 속성  
+names(model)
+# "coefficients" : 회귀계수 
+# "residuals" : 오차(잔차) 
+# "fitted.values" : 적합치  
+
+
+# 3) 회귀모델 예측치 : 미지의 x값 -> y예측  
+y_pred <- predict(model, data.frame(iq=150)) 
+
+
+# 4) 단순선형회귀 시각화
+plot(score_iq$iq, score_iq$score) # 산점도 
+abline(model, col='red') # 회귀선 
+
+
+# 5) 선형회귀 분석 결과 해석 
+summary(model)
+# <분석절차>
+# 1. 모델 통계적 유의성 검정 : F-검정 p-value < 0.05
+# 2. 모델 설명력 : R-squared(1수렴 정도)
+# 3. X변수의 유의성 검정 :  t-검정 p-value, * 강도 
+
+############################
+## 회귀계수 vs 결정계수 
+############################
+# - 회귀계수(re coefficient) : X의 기울기 
+# - 결정계수(R-squared:R^2) : 회귀모형에서 설명력을 보여주는 지표
+# R^2 = SSR / SST 
+# 전체제곱합(SST) = sum((y - y예측치평균)^2)
+# 회귀제곱합(SSR) = sum((y예측치 - y예측치평균)^2)
+
+

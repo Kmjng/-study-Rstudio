@@ -1,0 +1,59 @@
+# chap04_2_Function
+
+### 1. 사용자정의함수 
+
+# 함수명 <- function([인수]){
+#   실행문1
+#   실행문2
+#   [return(값)]
+# }
+
+
+# 1) 인수(매개변수)가 없는 함수 
+f1 <- function(){
+   cat('인수가 없는 함수')
+}
+
+
+# 2) 인수가 있는 경우 
+f2 <- function(x){ # x : 가인수
+   cat('x의 값 =', x, '\n')
+   print(x^2)
+}
+
+
+# 3) 반환(리턴)값이 있는 함수 
+f3 <- function(x, y){
+   add <- x + y
+   return(add)
+}
+
+
+
+# 예1) 표본분산, 표본표준편차를 구하는 함수를 정의하기 
+# 표본분산 식 : var = sum((x - 산술평균)^2) / (n-1)
+# 표본표준편차 식 : sd = sqrt(var)
+
+x <- c(7, 5, 12, 9, 15, 6)
+
+# 산술평균 함수 
+avg <- function(x){
+    return(sum(x) / length(x))
+}
+
+# 분산과 표준편차 함수 
+var_sd <- function(x){    
+    a <- avg(x) # 1. 산술평균     
+    var <- sum((x - a)^2) / (length(x)-1) # 2. 분산     
+    sd <- sqrt(var) # 3. 표준편차
+}
+
+
+
+# 예2) 구구단 출력 함수 정의하기  
+gugu <- function(dan){
+    cat('***', dan,'단 **\n')
+    for(i in 1:9){
+      cat(dan,'*',i,'=', dan*i, '\n')
+    }
+}

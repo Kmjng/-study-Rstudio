@@ -1,0 +1,54 @@
+### 3. 문자열 처리 & 정규표현식(메타문자)
+# - 정규표현식 : 메타문자 등을 이용하여 패턴을 지정하는 표현식
+# - 메타문자 : 패턴을 지정하는 약속된 기호 
+
+#install.packages('stringr')
+library(stringr)
+
+
+# 형식) str_extract('문자열', '패턴')
+str_extract('###232&^%^', '[0-9]{3}') # [1] "232"
+str_extract_all('###232&^%^234**$$', '[0-9]{3}')
+
+
+# 1) 반복관련 메타문자 : [x]: x1개 일치, {n} : n개 연속 
+string <- "hong35lee45kang55유관순25이사도시55"
+
+
+# (1) 숫자 추출 
+ages <- str_extract_all(string, '[0-9]{2}')
+
+# (2) 영문 추출 
+str_extract_all(string, '[a-z]{3,}')
+
+# 3) 한글 이름 추출 
+str_extract_all(string, '[가-힣]{3,}')
+
+
+# 2) 접두어/접미어 메타문자 : ^, $
+email <- "kpjiju@naver.com" # "id@호스트이름.최상도메인 
+str_extract_all(email, '^[a-z]\\w{3,}@\\w{3,}.com$')
+# \\w : 단어(숫자,영문,한글 혼용)
+# \\d : 숫자 
+
+
+# 3) 부정 메타문자 : [^x]
+str_extract_all(string, '[^0-9]{3,}') 
+
+
+# 4) 문자열 길이
+str_length(string) 
+
+
+# 5) 문자열 교체 
+str_replace_all(string, '[0-9]{2}', '-')
+
+
+# 6) 문자열 분리(split) 
+string2 <- "홍길동,이순신,유관순"
+names <- str_split(string2, ",")
+
+
+# 7) 단어 -> 문장 
+sent <- str_c(vnames, collapse = ' ')
+

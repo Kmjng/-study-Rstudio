@@ -1,0 +1,70 @@
+﻿###################################
+## 3. 변수 선택법 
+###################################
+# Stepwise : 전진선택법, 후진제거법, 단계선택법
+
+# 전진선택법 : model에 독립변수 한 개씩 추가
+# 후진제거법 : 중요도가 낮은 독립변수 한 개씩 제거
+# 단계선택법 : 전진선택법 + 후진제거법
+
+# 실습 dataset 
+newdata <- Prestige[-6] # type 제외 
+
+# 선형회귀모델 
+model <- lm(income ~ ., data = newdata)
+
+# 효과적인 변수 선택법
+library(MASS)
+
+step <- stepAIC(model, direction = 'both') # 단계선택법
+
+# AIC 지수값이 가장 작은 모델 선택
+# AIC(Akaike information criterion) : 모형의 복잡도에 벌점을 주는 방식으로 모델 성능 평가 기준 
+
+
+
+###################################
+# 4. 다중공선성
+###################################
+# - 독립변수 간의 강한 상관관계로 인해서 회귀분석의 결과를 신뢰할 수 없는 현상
+# - 한 독립변수의 값이 증가할 때 다른 독립변수의 값이 증가하거나 감소하는 현상
+
+# - 결정계수 : 회귀모형에서 설명력의 지표
+# R^2 = SSR / SST = 1 - SSE/SST
+
+# 회귀제곱합(SSR:Sum of Square Regression) = sum((y'- y_bar)^2)
+# 총제곱합(SST:Sum of Square Total) = sum((y - y_bar)^2) 
+# 오차제곱합(SSE:Sum of Square Error) = sum((y - y')^2)
+
+
+# 분산팽창요인(VIF) = 1 / (1 - R^2)
+# 결정계수의 값이 1과 가까워지면 VIF값도 커져서 다중공선성 존재가능성 높다.
+# - 생년월일과 나이를 독립변수로 갖는 경우
+# - 해결방안 : 강한 상관관계를 갖는 독립변수 제거
+
+# (1) 다중공선성 문제 확인
+#install.packages('car')
+library(car)
+
+# iris 이용 선형회귀모델 
+model <- lm(formula=Sepal.Length ~ Sepal.Width+Petal.Length+Petal.Width, data=iris)
+vif(model)
+
+sqrt(vif(model)) > 2 # root(VIF)가 2 이상인 것은 다중공선성 문제 의심 
+
+
+# (2) iris 변수 간의 상관계수 구하기
+cor(iris[,-5]) # 변수간의 상관계수 보기
+# 상관성이 높은 제거 대상 변수 탐색
+
+summary(model) # Adjusted R-squared:  0.8557 
+# Residual standard error: 0.3145
+
+# (3) 변수 제거(3번) -> 설명력 낮아짐 
+model2 <- lm(formula=Sepal.Length ~ Sepal.Width+Petal.Length, data=iris)
+summary(model2) # Adjusted R-squared:  0.838 
+# Residual standard error: 0.3333
+
+# (4) 변수 제거(4번) -> 설명력 더 낮아짐 
+model3 <- lm(formula=Sepal.Length ~ Sepal.Width+Petal.Width, data=iris)
+summary(model3) # Adjusted R-squared:  0.7033

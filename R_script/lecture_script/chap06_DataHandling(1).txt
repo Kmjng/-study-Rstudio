@@ -1,0 +1,76 @@
+# chap06_DataHandling_Sampling
+
+################################################
+# 1. dplyr 패키지 활용
+################################################
+
+# dplyr 패키지와 
+install.packages("dplyr") # plyr 패키지 업그레이드 
+library(dplyr)
+
+# 1) %>% : 파이프 연산자 : df 조작에 필요한 함수 나열 기능
+# 형식) df %>% func1() %>% func2()
+iris %>% head() %>% filter(Sepal.Length >= 5.0) 
+
+
+# 2) tibble() 함수 : 콘솔 크기에 맞는 데이터 구성
+iris_df <- tibble(iris) # 콘솔 크기에 맞는 데이터 구성 
+iris_df
+
+# 3) filter() 함수 : 행 추출
+# 형식) df %>% filter(필터조건)
+iris %>% filter(Sepal.Width > 3) %>% head()
+
+
+# 4) arrange()함수 : 칼럼 기준 정렬 
+# 형식) df %>% arrange(칼럼명)
+iris %>% arrange(Sepal.Width) %>% head() # 오름차순 
+iris %>% arrange(Sepal.Width) %>% tail()
+
+
+# 5) select()함수 : 열 선택
+# 형식) df %>% select(칼럼명)
+iris %>% select(Sepal.Length:Petal.Length, Species) %>% head() 
+
+
+# 6) mutate() 함수 : 파생변수(변형) 생성
+# 형식) df %>% mutate(변수 = 식)
+iris %>% mutate(diff = Sepal.Length - Sepal.Width) %>% head()
+
+
+# 7) summarise()함수 : 통계 
+# 형식) df %>% summarise(변수 = 내장함수)
+iris %>% summarise(col1_avg = mean(Sepal.Length),
+                   col2_sd = sd(Sepal.Width))
+
+
+# 8) group_by()함수 : 집단변수 이용 그룹화 
+# 형식) df %>% group_by(집단변수)
+iris_grp <- iris %>% group_by(Species)
+
+# 그룹별 통계 
+summarise(iris_grp, mean(Sepal.Length))
+
+
+# 9) left_join() 함수 : 왼쪽 dataframe의 x칼럼 기준 열 합치기  
+df1 <- data.frame(x=1:5, y=rnorm(5))
+df2 <- data.frame(x=c(1:3,5:6), z=rnorm(5))
+
+df_join <- left_join(df1, df2, by='x') # x칼럼 기준 : right_join()
+
+
+# 10) right_join() 함수 : 오른쪽 dataframe의  x칼럼 기준 열 합치기 
+df_join <- right_join(df1, df2, by='x') # 결과 동일 
+
+
+# 2개 데이터프레임 생성 
+df1 <- data.frame(x=1:5, y=rnorm(5))
+df2 <- data.frame(x=6:10, y=rnorm(5))
+
+# 11) bind_rows() : 행 합치기 
+df_rows <- bind_rows(df1, df2)
+
+
+# 12) bind_cols() : 열 합치기 
+df_cols <- bind_cols(df1, df2)
+
