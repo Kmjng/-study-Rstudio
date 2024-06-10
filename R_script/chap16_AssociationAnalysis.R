@@ -58,9 +58,12 @@
 # {A상품, 상품} => {B상품}  : A상품 집합이 포함된 거래에서 B상품이 포함된 거래  
 
 # 규칙(rule) 예
+# LHS : 선행사건 
+# RHS : 후행사건
+# {} : 공집합(전체)
 #  LHS -> RHS                 지지도      신뢰도     향상도 
-#  {}     -> {우유}         5/6=0.833    5/6=0.833   0.833/0.833(5/6)=1.000 
-#  {맥주} -> {고기}         1/6=0.166    1/2=0.5     0.5/0.66(4/6)=0.75          
+#  {}     -> {우유}         5/6=0.833    5/6=0.833   0.833/0.833(=5/6)=1.0 
+#  {맥주} -> {고기}         1/6=0.166    1/2=0.5     0.5/0.66(=4/6)=0.75          
 #  {라면,우유} -> {맥주}  
 
 # 연관규칙 평가 : 지지도와 향상도 이용 
@@ -81,8 +84,9 @@ library(arules)
 # Adult/Groceries 데이터셋 제공
 
 # 단계2. transaction 객체 생성(파일 이용)
-setwd("C:/ITWILL/5_R_Statistics/data")
+setwd("C:/ITWILL/5_R/R_Statistics/data")
 tran<- read.transactions("tran.txt", format="basket", sep=",")
+# arules 를 통해 트랜잭션 생성 
 tran
 
 # transaction 데이터 보기
@@ -106,7 +110,7 @@ inspect(rule2) # 규칙 보기
 library(arulesViz)
 
 plot(rule1, method = 'graph') # rule1 시각화 
-plot(rule1, method = 'graph') # rule2 시각화 
+plot(rule2, method = 'graph') # rule2 시각화 
 # 각 연관규칙 별로 연관성 있는 항목(item) 끼리 묶여서 네트워크 형태로 시각화
 
 
@@ -158,6 +162,11 @@ plot(rules29, method="graph")
 # (1) 전지우유(whole milk) 기준 subset  
 wmilk <- subset(rules29, rhs %in% 'whole milk')
 plot(wmilk, method="graph")
+
+# 화살표 : lhs -> rhs 
+# 타원크기 : 지지도 
+# 색상 농도 : 향상도 
+# 전지우유 : 허브+열대과일, 
 
 # 2. 기타 야채(other vegetables) 기준 subset
 oveg <- subset(rules29, rhs %in% 'other vegetables')
